@@ -1,0 +1,24 @@
+.sig {
+    margin: 0rem 0rem 0rem 3rem;
+    border-top: 2px solid black;
+    width: 13rem;
+    padding: 0.2rem 0rem 0rem 2rem;
+}
+
+.currentDate{
+    margin: 4rem -21rem 0rem 3rem;
+    width: 23rem;
+    padding: 0.5rem 0rem 0rem 2rem;
+}
+
+.image{
+    margin: -2rem -21rem 0rem 62rem;
+    width: 16rem;
+    padding: 0.5rem 1rem 0rem 2rem;
+}
+
+.image2{
+    margin: -7rem -22rem 0rem 62rem;
+    width: 16rem;
+    padding: 0.5rem 1rem 0rem 2rem;
+}
