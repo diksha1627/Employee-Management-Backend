@@ -121,7 +121,7 @@ app.get("/get-single-payslip/:id",async(req,res)=>{
 
 
 
-const CONNECTION_URL = 'mongodb://diksha:Alpha113.@ac-gzpeqd8-shard-00-00.zpie1go.mongodb.net:27017,ac-gzpeqd8-shard-00-01.zpie1go.mongodb.net:27017,ac-gzpeqd8-shard-00-02.zpie1go.mongodb.net:27017/?ssl=true&replicaSet=atlas-mkgko1-shard-0&authSource=admin&retryWrites=true&w=majority';
+const CONNECTION_URL = 'mongodb+srv://quordnet:quordnet-1234@cluster0.mhmaf.mongodb.net/MatriculaMockTest?retryWrites=true&w=majority';
 const PORT = process.env.PORT || 5000;
 mongoose.connect(CONNECTION_URL)
     .then(() => app.listen(PORT, () => console.log(`Server running on port: ${PORT}`)))
