@@ -4,7 +4,7 @@ var PayslipSchema = new mongoose.Schema({
     name: String,
     employeeCode: String,
     designation: String,
-    dateOfJoining:Date,
+    dateOfJoining: String,
     paymentMonth:String,
     issuerName:String,
     accountNumber:String,
@@ -12,7 +12,7 @@ var PayslipSchema = new mongoose.Schema({
     paymentStatus:String,
     email:String,
     department:String,
-    currentDate:Date,
+    currentDate:String,
     amount:Number,
 }); 
   

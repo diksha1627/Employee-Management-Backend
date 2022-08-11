@@ -6,16 +6,37 @@ var mongoose = require('mongoose');
 var multer = require('multer');
 var csv = require('csvtojson');
 const morgan = require('morgan');
+const fs = require('fs');
 require('dotenv/config');
 
- const fileStorageEngine = multer.diskStorage({
-     destination : (req, file ,cb)=>{
-         cb(null,"./uploads");
-     },
-     filename :(req,file,cb)=>{
-         cb(null, Date.now() + "--" + file.originalname);
-     },
- });
+
+const dir = './uploads';
+if (fs.existsSync(dir)){
+
+  
+    var fileStorageEngine = multer.diskStorage({
+        destination : (req, file ,cb)=>{
+            cb(null,"./uploads");
+        },
+        filename :(req,file,cb)=>{
+            cb(null, Date.now() + "--" + file.originalname);
+        },
+    });
+ 
+} else if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+}
+var fileStorageEngine = multer.diskStorage({
+    destination : (req, file ,cb)=>{
+        cb(null,"./uploads");
+    },
+    filename :(req,file,cb)=>{
+        cb(null, Date.now() + "--" + file.originalname);
+    },
+});
+
+
+
 
 var upload = multer({ storage: fileStorageEngine  });
 var PayslipModel = require('./model');
@@ -35,10 +56,10 @@ app.get('/', (req, res) => {
     });
 });
 app.post('/',upload.single('file'), async (req, res, next) => {
-    console.log(req.file);
     try {
         const arrayToAdd = [];
         console.log(req.file.path);
+       await PayslipModel.remove({});
         csv()
             .fromFile(req.file.path)
             .then(async (jsonObj) => {
@@ -63,30 +84,31 @@ app.post('/',upload.single('file'), async (req, res, next) => {
                 console.log('====================================');
                 console.log(arrayToAdd);
                 console.log('====================================');
-
-                const addData = await PayslipModel.insertMany(arrayToAdd);
+                
+               const addData = await PayslipModel.insertMany(arrayToAdd);
                 if (addData) {
+                    fs.unlinkSync(req.file.path);
                     res.status(200).json({
                         data: addData
                     })
                 }
                 else {
-
                     res.status(400).json({
                         data: addData
                     })
-                }
+                } 
             })
-
-    } catch (error) {
+ 
+    } 
+    catch (error) {
 
         res.status(400).json({
             message: error.message
         })
-
     }
-
+   
 });
+
 
 app.get("/get-single-payslip/:id",async(req,res)=>{
       const {id} = req.params;
@@ -121,6 +143,52 @@ app.get("/get-single-payslip/:id",async(req,res)=>{
 
 
 
+app.put("/update-single-payslip/:id",async(req,res)=>{
+    const {id} = req.params;
+    const {name} = req.body;
+
+
+  try {
+      
+      const updateSinglePayslip = await PayslipModel.findByIdAndUpdate({_id:id},{
+        name:name,
+      },
+      {
+        new:true
+      }
+      );
+
+      if(updateSinglePayslip){
+          res.status(200).json({
+              success:true,
+              message: "payslip Updated successfull",
+              data:updateSinglePayslip
+          })
+      } else {
+
+          res.status(404).json({
+              success:false,
+              message: "payslip not found ",
+          })
+
+      }
+      
+  } catch (error) {
+
+      res.status(400).json({
+          success:false,
+          message:error.message
+      })
+      
+  }
+})
+
+
+
+
+
+
+// 
 const CONNECTION_URL = 'mongodb+srv://quordnet:quordnet-1234@cluster0.mhmaf.mongodb.net/HRMTool?retryWrites=true&w=majority';
 const PORT = process.env.PORT || 5000;
 mongoose.connect(CONNECTION_URL)
