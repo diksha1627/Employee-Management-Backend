@@ -46,9 +46,10 @@ module.exports.signup = async(req,res)=>{
 
     try {
         await user.save();
+        res.status(200).json({message: "Signup Successfull" , user } );
     } catch (error) {
         console.log(error);
-    }
+    } 
 }
 
 

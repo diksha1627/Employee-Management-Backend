@@ -6,7 +6,7 @@ const AttendanceSchema = new mongoose.Schema({
     month: {type: String, required: true},
     date: {type: String, required: true},
     present: {type: String, required: true},
-
+ 
 });
 
 module.exports = new mongoose.model('attendance',AttendanceSchema);

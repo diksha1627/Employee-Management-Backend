@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/",payslipRouter);
 app.use("/",employeeRouter);
-app.use("/",userRouter);
+app.use("/",userRouter); 
 app.use("/",leaveRouter);
 app.use("/",attendanceRouter);
 
